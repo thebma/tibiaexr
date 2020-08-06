@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using tibexr.Static;
 using tibexr.Util;
 
 using static tibexr.Util.PrettyPrint;
@@ -15,6 +16,7 @@ namespace tibexr
         {
             //TODO: Support operations via the args array.
             DoConfigChecks();
+            DetectTibiaVersions();
 
             //SprFileHandler sprFileHandler70 = new SprFileHandler(@"data\Tibia7.0.spr");
             //sprFileHandler70.SaveRange(0, 100);
@@ -60,8 +62,6 @@ namespace tibexr
                         PPWait();
                     }
 
-                    //TODO: Scan for tibia directories.
-
                     Config = new Config
                     {
                         Version = CONFIG_VERSION,
@@ -81,6 +81,11 @@ namespace tibexr
 
                 Config = CommonFiles.ReadConfig();
             }
+        }
+
+        private static void DetectTibiaVersions()
+        {
+            PPStep("versions");
         }
     }
 }
