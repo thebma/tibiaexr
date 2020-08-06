@@ -23,12 +23,12 @@ namespace tibexr.Util
 
         public static void PPFormat(string message)
         {
-            Console.WriteLine($"[{Timestamp}] [{currentStep.ToUpper()}] - {message}");
+            Console.WriteLine($"[{Timestamp}] [{currentStep.ToUpper()}] {message}");
         }
 
         public static void PPFormatInline(string message)
         {
-            Console.Write($"[{Timestamp}] [{currentStep.ToUpper()}] - {message}");
+            Console.Write($"[{Timestamp}] [{currentStep.ToUpper()}] {message}");
         }
 
         public static void PPClear()

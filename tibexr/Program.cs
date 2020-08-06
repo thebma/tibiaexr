@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using tibexr.Static;
 using tibexr.Util;
@@ -11,12 +12,14 @@ namespace tibexr
     {
         static int CONFIG_VERSION = 1; //Any alterations to the config stucture should be paired with incrementing this number.
         static Config Config;
+        static List<TibiaVersion> InstalledVersions = new List<TibiaVersion>();
 
         static void Main(string[] args)
         {
             //TODO: Support operations via the args array.
             DoConfigChecks();
             DetectTibiaVersions();
+            PrintCommands();
 
             //SprFileHandler sprFileHandler70 = new SprFileHandler(@"data\Tibia7.0.spr");
             //sprFileHandler70.SaveRange(0, 100);
@@ -86,6 +89,36 @@ namespace tibexr
         private static void DetectTibiaVersions()
         {
             PPStep("versions");
+
+            foreach (TibiaVersion tibiaVersion in TibiaVersions.Versions)
+            {
+                string path = Path.Combine(Config.Path, tibiaVersion.Shortname);
+
+                if (Directory.Exists(path))
+                {
+                    PPFormat($"Found version {tibiaVersion.Fullname}...");
+                    InstalledVersions.Add(tibiaVersion);
+                }
+            }
+        }
+
+        private static void PrintCommands()
+        {
+            //TODO: Instead this, could we store a synopis and elaborate usage of commands inside the command objects?
+            //      This way we don't need to hardcode it and give the user a "explain" command for detailed usage.
+            PPClear();
+            PPStep("commands");
+            PPFormat("General commands:");
+            PPFormat("\treset - Resets the config and lets you reconfigure the application.");
+            PPFormat("\tfetch <shortcode> - Download and install a  tibia version");
+            PPFormat("Sprite commands:");
+            PPFormat("\tsprunpack <version> <composite> <png|bmp> - Unpack sprites.");
+            PPFormat("\tsprpack <version> <png|bmp> - Pack sprites.");
+            PPFormat("\tsprcomp <version> <png|bmp> - Compare and output sprites.");
+            PPFormat("\tsprsheet <version> <png|bmp> - Create a spritesheet.");
+            PPFormat("\tsprsig <version|all> - Scan a specific or all sprites for their signatures.");
+
+
         }
     }
 }
