@@ -15,10 +15,10 @@ Planned:
 - Repacking the .spr file with modified sprites (and subsequently update the .dat file to accomendate for the new data).
 
 Supported:
-Tibia 7.0, Signature: 0x3D6D5CA3
-Tibia 7.4, Signature: 0x41B9EA86
-Tibia 7.6, Signature: 0x439852BE
-Tibia 8.6 (old?), Signature: 0x4C220594 
+- Tibia 7.0, Signature: 0x3D6D5CA3
+- Tibia 7.4, Signature: 0x41B9EA86
+- Tibia 7.6, Signature: 0x439852BE
+- Tibia 8.6 (old?), Signature: 0x4C220594 
 
 If you want additional versions, please make a request by making an issue.
 This way I can double check it if it works or not.
