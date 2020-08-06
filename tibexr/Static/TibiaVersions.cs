@@ -1,4 +1,7 @@
-﻿namespace tibexr.Static
+﻿using System;
+using System.Linq;
+
+namespace tibexr.Static
 {
     public struct TibiaVersion
     {
@@ -10,7 +13,16 @@
         public TibiaVersion(string fullname, int sprSig, int datSig)
         {
             Fullname = fullname;
-            Shortname = fullname.Replace("Tibia ", "").Replace(".", "");
+
+            string name = fullname.Replace("Tibia ", "");
+            int[] semver = fullname
+                              .Replace("Tibia ", "")
+                              .Split('.')
+                              .Select(x => int.Parse(x))
+                              .ToArray();
+
+            Shortname = (semver[0] * 100 + semver[1]).ToString();
+
             SpriteSignature = sprSig;
             DatSignature = datSig;
         }
@@ -30,36 +42,36 @@
     {
         public static TibiaVersion[] Versions = new TibiaVersion[]
         {
-            new TibiaVersion("Tibia 7.0", 0, 0),
+            new TibiaVersion("Tibia 7.00", 0, 0),
             new TibiaVersion("Tibia 7.01", 0, 0),
             new TibiaVersion("Tibia 7.02", 0, 0),
-            new TibiaVersion("Tibia 7.1",  0, 0),
+            new TibiaVersion("Tibia 7.10",  0, 0),
             new TibiaVersion("Tibia 7.13",  0, 0),
             new TibiaVersion("Tibia 7.21",  0, 0),
             new TibiaVersion("Tibia 7.26",  0, 0),
             new TibiaVersion("Tibia 7.27",  0, 0),
-            new TibiaVersion("Tibia 7.3",  0, 0),
-            new TibiaVersion("Tibia 7.4",  0, 0),
+            new TibiaVersion("Tibia 7.30",  0, 0),
+            new TibiaVersion("Tibia 7.40",  0, 0),
             new TibiaVersion("Tibia 7.41",  0, 0),
-            new TibiaVersion("Tibia 7.5",  0, 0),
-            new TibiaVersion("Tibia 7.6",  0, 0),
-            new TibiaVersion("Tibia 7.7",  0, 0),
+            new TibiaVersion("Tibia 7.50",  0, 0),
+            new TibiaVersion("Tibia 7.60",  0, 0),
+            new TibiaVersion("Tibia 7.70",  0, 0),
             new TibiaVersion("Tibia 7.72",  0, 0),
-            new TibiaVersion("Tibia 7.8",  0, 0),
+            new TibiaVersion("Tibia 7.80",  0, 0),
             new TibiaVersion("Tibia 7.81",  0, 0),
-            new TibiaVersion("Tibia 7.9",  0, 0),
+            new TibiaVersion("Tibia 7.90",  0, 0),
             new TibiaVersion("Tibia 7.92",  0, 0),
-            new TibiaVersion("Tibia 8.1",  0, 0),
+            new TibiaVersion("Tibia 8.10",  0, 0),
             new TibiaVersion("Tibia 8.11",  0, 0),
-            new TibiaVersion("Tibia 8.2",  0, 0),
+            new TibiaVersion("Tibia 8.20",  0, 0),
             new TibiaVersion("Tibia 8.21",  0, 0),
             new TibiaVersion("Tibia 8.22",  0, 0),
-            new TibiaVersion("Tibia 8.3",  0, 0),
+            new TibiaVersion("Tibia 8.30",  0, 0),
             new TibiaVersion("Tibia 8.31",  0, 0),
             new TibiaVersion("Tibia 8.40",  0, 0),
             new TibiaVersion("Tibia 8.41",  0, 0),
             new TibiaVersion("Tibia 8.42",  0, 0),
-            new TibiaVersion("Tibia 8.5",  0, 0),
+            new TibiaVersion("Tibia 8.50",  0, 0),
             new TibiaVersion("Tibia 8.52",  0, 0),
             new TibiaVersion("Tibia 8.53",  0, 0),
             new TibiaVersion("Tibia 8.54",  0, 0),
@@ -69,21 +81,21 @@
             new TibiaVersion("Tibia 8.60",  0, 0),
             new TibiaVersion("Tibia 8.61",  0, 0),
             new TibiaVersion("Tibia 8.62",  0, 0),
-            new TibiaVersion("Tibia 8.7",  0, 0),
+            new TibiaVersion("Tibia 8.70",  0, 0),
             new TibiaVersion("Tibia 8.71",  0, 0),
-            new TibiaVersion("Tibia 9.0",  0, 0),
-            new TibiaVersion("Tibia 9.1",  0, 0),
-            new TibiaVersion("Tibia 9.2",  0, 0),
+            new TibiaVersion("Tibia 9.00",  0, 0),
+            new TibiaVersion("Tibia 9.10",  0, 0),
+            new TibiaVersion("Tibia 9.20",  0, 0),
             new TibiaVersion("Tibia 9.31",  0, 0),
-            new TibiaVersion("Tibia 9.4",  0, 0),
+            new TibiaVersion("Tibia 9.40",  0, 0),
             new TibiaVersion("Tibia 9.41",  0, 0),
             new TibiaVersion("Tibia 9.42",  0, 0),
             new TibiaVersion("Tibia 9.43",  0, 0),
             new TibiaVersion("Tibia 9.44",  0, 0),
             new TibiaVersion("Tibia 9.52",  0, 0),
-            new TibiaVersion("Tibia 9.6",  0, 0),
-            new TibiaVersion("Tibia 9.7",  0, 0),
-            new TibiaVersion("Tibia 9.8",  0, 0),
+            new TibiaVersion("Tibia 9.60",  0, 0),
+            new TibiaVersion("Tibia 9.70",  0, 0),
+            new TibiaVersion("Tibia 9.80",  0, 0),
             new TibiaVersion("Tibia 9.81",  0, 0),
             new TibiaVersion("Tibia 10.00",  0, 0),
             new TibiaVersion("Tibia 10.10",  0, 0),
@@ -111,17 +123,19 @@
             new TibiaVersion("Tibia 10.80",  0, 0),
             new TibiaVersion("Tibia 10.81",  0, 0),
             new TibiaVersion("Tibia 10.82",  0, 0),
-            new TibiaVersion("Tibia 10.90",  0, 0),
-            new TibiaVersion("Tibia 10.91",  0, 0),
-            new TibiaVersion("Tibia 10.92",  0, 0),
-            new TibiaVersion("Tibia 10.93",  0, 0),
-            new TibiaVersion("Tibia 10.94",  0, 0),
-            new TibiaVersion("Tibia 10.95",  0, 0),
-            new TibiaVersion("Tibia 10.96",  0, 0),
-            new TibiaVersion("Tibia 10.97",  0, 0),
-            new TibiaVersion("Tibia 10.98",  0, 0),
-            new TibiaVersion("Tibia 10.99",  0, 0),
-            new TibiaVersion("Tibia 11.00",  0, 0),
+
+            //We don't support these versions yet.
+            //new TibiaVersion("Tibia 10.90",  0, 0),
+            //new TibiaVersion("Tibia 10.91",  0, 0),
+            //new TibiaVersion("Tibia 10.92",  0, 0),
+            //new TibiaVersion("Tibia 10.93",  0, 0),
+            //new TibiaVersion("Tibia 10.94",  0, 0),
+            //new TibiaVersion("Tibia 10.95",  0, 0),
+            //new TibiaVersion("Tibia 10.96",  0, 0),
+            //new TibiaVersion("Tibia 10.97",  0, 0),
+            //new TibiaVersion("Tibia 10.98",  0, 0),
+            //new TibiaVersion("Tibia 10.99",  0, 0),
+            //new TibiaVersion("Tibia 11.00",  0, 0),
         };
     }
 }

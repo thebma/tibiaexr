@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using tibexr.Static;
 using tibexr.Util;
 
@@ -99,7 +100,48 @@ namespace tibexr
                     PPFormat($"Found version {tibiaVersion.Fullname}...");
                     InstalledVersions.Add(tibiaVersion);
                 }
+
+                bool mirrorExists = CheckMirror(tibiaVersion.Shortname);
+
+                if (mirrorExists)
+                {
+                    PPFormat($"Mirror {tibiaVersion.Fullname}.zip [{tibiaVersion.Shortname}]: OK");
+                }
+                else
+                {
+                    PPFormat($"Mirror {tibiaVersion.Fullname}.zip [{tibiaVersion.Shortname}]: MISSING");
+                }
             }
+        }
+
+        private static bool CheckMirror(string shortname)
+        {
+            try
+            {
+                string url = $"https://github.com/thebma/tibiaexr/blob/master/mirror/{shortname}.zip";
+
+                HttpWebRequest webReq = WebRequest.Create(url) as HttpWebRequest;
+                webReq.Method = "HEAD";
+
+                HttpWebResponse webResp = webReq.GetResponse() as HttpWebResponse;
+                HttpStatusCode code = webResp.StatusCode;
+
+                webResp.Close();
+
+                if (code == HttpStatusCode.OK)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            } 
+            catch
+            {
+                return false;
+            }
+
         }
 
         private static void PrintCommands()
@@ -117,8 +159,6 @@ namespace tibexr
             PPFormat("\tsprcomp <version> <png|bmp> - Compare and output sprites.");
             PPFormat("\tsprsheet <version> <png|bmp> - Create a spritesheet.");
             PPFormat("\tsprsig <version|all> - Scan a specific or all sprites for their signatures.");
-
-
         }
     }
 }
