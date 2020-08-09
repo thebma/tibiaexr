@@ -138,6 +138,19 @@ namespace tibexr.Static
             //new TibiaVersion("Tibia 11.00",  0, 0),
         };
 
+        public static bool IsVersionSupported(string shortCode)
+        {
+            foreach (TibiaVersion tibVer in Versions)
+            {
+                if (tibVer.Shortname.Equals(shortCode, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsDatVersionSupported(uint signature)
         {
             foreach (TibiaVersion tibVer in Versions)

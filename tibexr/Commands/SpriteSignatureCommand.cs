@@ -6,12 +6,12 @@ namespace tibexr.Commands
 {
     class SpriteSignatureCommand : ICommand
     {
-        public void Execute(List<string> args)
+        public bool Execute(List<string> args)
         {
             throw new NotImplementedException();
         }
 
-        public string GetDetailed()
+        public string GetUsage()
         {
             throw new NotImplementedException();
         }

@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using tibexr.Static;
 
 namespace tibexr.Util
 {
@@ -45,6 +46,42 @@ namespace tibexr.Util
             };
 
             return config;
+        }
+
+        public static void PrepareDistro(string shortCode)
+        {
+            if (!TibiaVersions.IsVersionSupported(shortCode))
+            {
+                return;
+            }
+
+            string path = $"distro/{shortCode}";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            else
+            {
+                DirectoryInfo rootDirectoryInfo = new DirectoryInfo(path);
+
+                foreach (FileInfo fileInfo in rootDirectoryInfo.GetFiles())
+                {
+                    fileInfo.Delete();
+                }
+
+                foreach (DirectoryInfo directoryInfo in rootDirectoryInfo.GetDirectories())
+                {
+                    directoryInfo.Delete(true);
+                }
+            }
+        }
+
+        public static void PrepareDistroFolder()
+        {
+            if (!Directory.Exists("distro"))
+            {
+                Directory.CreateDirectory("distro");
+            }
         }
     }
 }

@@ -31,6 +31,11 @@ namespace tibexr.Util
             Console.Write($"[{Timestamp}] [{currentStep.ToUpper()}] {message}");
         }
 
+        public static void PPFormatRawInline(string message)
+        {
+            Console.Write(message);
+        }
+
         public static void PPClear()
         {
             Console.Clear();
@@ -38,7 +43,13 @@ namespace tibexr.Util
 
         public static void PPWait()
         {
-            System.Threading.Thread.Sleep(2000);
+            PPFormatInline("Resetting");
+            for (int i = 0; i < 4; i++)
+            {
+                PPFormatRawInline(".");
+                System.Threading.Thread.Sleep(1000);
+            }
+
         }
 
     }

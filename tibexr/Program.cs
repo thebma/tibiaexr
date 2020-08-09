@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using tibexr.Static;
+using System.Collections.Generic;
+
 using tibexr.Util;
+using tibexr.Static;
+using tibexr.Commands;
 
 using static tibexr.Util.PrettyPrint;
 
@@ -15,15 +17,20 @@ namespace tibexr
 
         static Config Config;
         static List<TibiaVersion> InstalledVersions = new List<TibiaVersion>();
+        static Dictionary<string, ICommand> Commands = new Dictionary<string, ICommand>
+        {
+            { "fetch", new FetchCommand() }
+        };
 
         static void Main(string[] args)
         {
             //TODO: Support operations via the args array.
-            //DoConfigChecks();
-            //DetectTibiaVersions();
-            //PrintCommands();
-           
-            DatFileHandler datFileHandler = new DatFileHandler(@"data\Tibia.dat");
+            DoConfigChecks();
+            DetectTibiaVersions();
+            PrintCommands();
+            ParseCommands();
+
+            //DatFileHandler datFileHandler = new DatFileHandler(@"data\Tibia.dat");
 
             Console.ReadLine();
         }
@@ -91,56 +98,12 @@ namespace tibexr
                     PPFormat($"Found version {tibiaVersion.Fullname}...");
                     InstalledVersions.Add(tibiaVersion);
                 }
-
-                //TODO: this should be a command.
-                if (true) continue;
-
-                bool mirrorExists = CheckMirror(tibiaVersion.Shortname);
-
-                if (mirrorExists)
-                {
-                    PPFormat($"Mirror {tibiaVersion.Fullname}.zip [{tibiaVersion.Shortname}]: OK");
-                }
-                else
-                {
-                    PPFormat($"Mirror {tibiaVersion.Fullname}.zip [{tibiaVersion.Shortname}]: MISSING");
-                }
             }
-        }
-
-        private static bool CheckMirror(string shortname)
-        {
-            try
-            {
-                string url = $"https://github.com/thebma/tibiaexr/blob/master/mirror/{shortname}.zip";
-
-                HttpWebRequest webReq = WebRequest.Create(url) as HttpWebRequest;
-                webReq.Method = "HEAD";
-
-                HttpWebResponse webResp = webReq.GetResponse() as HttpWebResponse;
-                HttpStatusCode code = webResp.StatusCode;
-
-                webResp.Close();
-
-                if (code == HttpStatusCode.OK)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            } 
-            catch
-            {
-                return false;
-            }
-
         }
 
         private static void PrintCommands()
         {
-            //TODO: Instead this, could we store a synopis and elaborate usage of commands inside the command objects?
+            //TODO: Instead of this, could we store a synopis and elaborate usage of commands inside the command objects?
             //      This way we don't need to hardcode it and give the user a "explain" command for detailed usage.
             PPClear();
             PPStep("commands");
@@ -153,6 +116,74 @@ namespace tibexr
             PPFormat("\tsprcomp <version> <png|bmp> - Compare and output sprites.");
             PPFormat("\tsprsheet <version> <png|bmp> - Create a spritesheet.");
             PPFormat("\tsprsig <version|all> - Scan a specific or all sprites for their signatures.");
+        }
+
+        private static void ParseCommands()
+        {
+            while (true)
+            {
+                //Print the commands again, ask for user input.
+                PrintCommands();
+                PPFormat("");
+                PPFormatInline("Enter a command: ");
+
+                string commandInput = Console.ReadLine();
+                if (string.IsNullOrEmpty(commandInput))
+                {
+                    PPFormat("You did not enter a command.");
+                    PPWait();
+                    continue;
+                }
+
+                string[] commandText = commandInput.Split(' ');
+                if (commandText.Length < 1)
+                {
+                    PPFormat("You did not enter a command.");
+                    PPWait();
+                    continue;
+                }
+
+                string command = null;
+                List<string> args = new List<string>();
+
+                //Extract the command and arguments.
+                foreach (string commandStr in commandText)
+                {
+                    if (string.IsNullOrEmpty(commandStr))
+                    {
+                        continue;
+                    }
+
+                    if (command == null)
+                    {
+                        command = commandStr;
+                    }
+                    else
+                    {
+                        args.Add(commandStr);
+                    }
+                }
+
+                // Try running the command.
+                bool foundCommand = Commands.TryGetValue(command, out ICommand commandObj);
+
+                if (!foundCommand)
+                {
+                    PPFormat($"The specified command '{command}' was not found");
+                    PPWait();
+                    continue;
+                }
+                else
+                {
+                    PPFormat($"Running command '{command}' with args [{string.Join(',', args)}]...");
+
+                    bool didCommandRunSuccessfully = commandObj.Execute(args);
+                    PPFormat(didCommandRunSuccessfully ? "Ran command successfully." : "An error occured when running this command.");
+
+                    PPWait();
+                }
+            }
+
         }
     }
 }

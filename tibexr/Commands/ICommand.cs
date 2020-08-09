@@ -5,8 +5,8 @@ namespace tibexr.Commands
     public interface ICommand
     {
         public string GetSynopsis();
-        public string GetDetailed();
+        public string GetUsage();
 
-        public void Execute(List<string> args);
+        public bool Execute(List<string> args);
     }
 }
