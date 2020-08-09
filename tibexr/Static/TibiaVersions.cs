@@ -54,7 +54,7 @@ namespace tibexr.Static
             new TibiaVersion("Tibia 7.40",  0, 0),
             new TibiaVersion("Tibia 7.41",  0, 0),
             new TibiaVersion("Tibia 7.50",  0, 0),
-            new TibiaVersion("Tibia 7.60",  0, 0),
+            new TibiaVersion("Tibia 7.60",  0, 1134385715),
             new TibiaVersion("Tibia 7.70",  0, 0),
             new TibiaVersion("Tibia 7.72",  0, 0),
             new TibiaVersion("Tibia 7.80",  0, 0),
@@ -137,5 +137,31 @@ namespace tibexr.Static
             //new TibiaVersion("Tibia 10.99",  0, 0),
             //new TibiaVersion("Tibia 11.00",  0, 0),
         };
+
+        public static bool IsDatVersionSupported(uint signature)
+        {
+            foreach (TibiaVersion tibVer in Versions)
+            {
+                if (tibVer.DatSignature == signature)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsSprVersionSupported(uint signature)
+        {
+            foreach (TibiaVersion tibVer in Versions)
+            {
+                if (tibVer.DatSignature == signature)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
